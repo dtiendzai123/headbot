@@ -15,8 +15,8 @@ const CONFIG = {
     chest: { radius: 30 }
   },
   SENSITIVITY: {
-    dpi: 400,
-    gameSensitivity: 50
+    dpi: 5000,
+    gameSensitivity: 300
   },
   FIRE: {
     auto: true,
@@ -164,14 +164,14 @@ this.AimAssistSystem = AimAssistSystem;
 const EXTRA_CONFIG = {
   smoothingFrames: 5,
   zoomLevelTrigger: 2,
-  sensitivityBase: 1.0,
+  sensitivityBase: 5.0,
   recoilCompensation: true,
-  aimPrecision: 0.1,
+  aimPrecision: 0.01,
   useHumanNoise: true,
   noiseLevel: 0.3,
   maxFPS: 300,
   recoilBuffer: 10,
-  oneShotDistance: 20,
+  oneShotDistance: 999,
   enableGhostTracking: true,
   headOffsetRatio: 0.6,
   neckAvoidRatio: 0.7,
@@ -221,10 +221,10 @@ this.DELAY = DELAY;
 this.VECTOR_CACHE = VECTOR_CACHE;
 this.CoordinateTracker = CoordinateTracker;
 const BODY_POINTS = {
-  HEAD:   { offsetY: 0.2, zone: 'head' },
-  NECK:   { offsetY: 0.4, zone: 'neck' },
-  CHEST:  { offsetY: 0.6, zone: 'chest' },
-  BELLY:  { offsetY: 0.8, zone: 'stomach' }
+  HEAD:   { offsetY: 0.00907892, zone: 'head' },
+  NECK:   { offsetY: 0.00907892, zone: 'neck' },
+  CHEST:  { offsetY: 0.00907892, zone: 'chest' },
+  BELLY:  { offsetY: 0.00907892, zone: 'stomach' }
 };
 class ScreenStabilizer {
   constructor() {
@@ -587,7 +587,7 @@ function getHeadTarget(callback) {
     height: 1.0,
     hasHelmet: false,
     behindWall: false,
-    distance: 10
+    distance: 9999
   };
   callback(dummyTarget);
 }
@@ -643,7 +643,7 @@ function captureAndroidScreen(callback) {
       height: 1,
       hasHelmet: false,
       behindWall: false,
-      distance: 10
+      distance: 9999
     });
   }, 50);
 }
@@ -658,7 +658,7 @@ function runHeadDetection(callback) {
       height: 1,
       hasHelmet: false,
       behindWall: false,
-      distance: 10
+      distance: 9999
     };
     callback(fakeDetection);
   }, 100);
