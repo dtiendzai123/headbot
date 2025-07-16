@@ -288,19 +288,7 @@ const CONFIGFIX = {
   stabilizationWindow: 7
 };
 // Giả định đã có dữ liệu bone head từ game API
-const boneHead = {
-  position: new Vector3(-0.0456970781, -0.004478302, -0.0200432576),
-  rotation: new Quaternion(0.0258174837, -0.08611039, -0.1402113, 0.9860321),
-  scale: new Vector3(0.99999994, 1.00000012, 1.0)
-};
 
-// Ưu tiên lock theo bone head thực thay vì zone trên màn hình
-aimLockSystem.lockToTarget(boneHead.position);
-
-// Optional: Điều chỉnh offset nếu bạn muốn bắn hơi trên đầu hoặc giữa đầu
-const headOffset = new Vector3(0, boneHead.scale.y * 0.1, 0);
-const adjustedHeadPosition = boneHead.position.add(headOffset);
-aimLockSystem.lockToTarget(adjustedHeadPosition);
 const DATA = {
   trackHistory: [],
   frameTimes: [],
@@ -2047,3 +2035,61 @@ function xAxisBiasAssist(vector, target) {
   return Math.abs(diff) < 10 ? { x: vector.x + diff * 0.2, y: vector.y } : vector
 }
 
+// === Vector3 Class ===
+class Vector3 {
+  constructor(x = 0, y = 0, z = 0) {
+    this.x = x; this.y = y; this.z = z;
+  }
+
+  add(v) {
+    return new Vector3(this.x + v.x, this.y + v.y, this.z + v.z);
+  }
+
+  subtract(v) {
+    return new Vector3(this.x - v.x, this.y - v.y, this.z - v.z);
+  }
+
+  multiplyScalar(s) {
+    return new Vector3(this.x * s, this.y * s, this.z * s);
+  }
+
+  clone() {
+    return new Vector3(this.x, this.y, this.z);
+  }
+
+  normalize() {
+    const length = Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+    return length === 0 ? new Vector3(0, 0, 0) : new Vector3(this.x / length, this.y / length, this.z / length);
+  }
+
+  distanceTo(v) {
+    const dx = this.x - v.x, dy = this.y - v.y, dz = this.z - v.z;
+    return Math.sqrt(dx * dx + dy * dy + dz * dz);
+  }
+}
+
+// === Quaternion Class === (chỉ để giữ dữ liệu, không tính toán xoay trong đoạn này)
+class Quaternion {
+  constructor(x = 0, y = 0, z = 0, w = 1) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+    this.w = w;
+  }
+}
+
+// === boneHead thực ===
+const boneHead = {
+  position: new Vector3(-0.0456970781, -0.004478302, -0.0200432576),
+  rotation: new Quaternion(0.0258174837, -0.08611039, -0.1402113, 0.9860321),
+  scale: new Vector3(0.99999994, 1.00000012, 1.0)
+};
+
+// === Tính toán vị trí head offset (cao hơn một chút để trúng chính xác đỉnh đầu) ===
+const headOffset = new Vector3(0, boneHead.scale.y * 0.1, 0);
+const adjustedHeadPosition = boneHead.position.add(headOffset);
+
+// === Lock đến vị trí đầu đã được điều chỉnh ===
+if (typeof aimLockSystem !== 'undefined' && aimLockSystem.lockToTarget) {
+  aimLockSystem.lockToTarget(adjustedHeadPosition);
+}
