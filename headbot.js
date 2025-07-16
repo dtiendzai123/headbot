@@ -10,13 +10,13 @@ const CONFIG = {
     y: 1800
   },
   AIM_ZONES: {
-    head: { radius: 20 },
-    neck: { radius: 25 },
-    chest: { radius: 30 }
+    head: { radius: 360 },
+    neck: { radius: 180 },
+    chest: { radius: 90 }
   },
   SENSITIVITY: {
     dpi: 5000,
-    gameSensitivity: 300
+    gameSensitivity: 400
   },
   FIRE: {
     auto: true,
@@ -166,16 +166,16 @@ const EXTRA_CONFIG = {
   zoomLevelTrigger: 2,
   sensitivityBase: 5.0,
   recoilCompensation: true,
-  aimPrecision: 0.01,
+  aimPrecision: 0.001,
   useHumanNoise: true,
-  noiseLevel: 0.3,
-  maxFPS: 300,
-  recoilBuffer: 10,
-  oneShotDistance: 999,
-  enableGhostTracking: true,
-  headOffsetRatio: 0.6,
-  neckAvoidRatio: 0.7,
-  xitatedFactor: 1.5
+  noiseLevel: 0.01,              // Mức nhiễu thấp nhất có thể (lọc cực mượt, siêu chính xác)
+maxFPS: 1000,                  // Cập nhật siêu nhanh (giới hạn phần cứng & API)
+recoilBuffer: 0,               // Không delay khi recoil, phản ứng tức thì
+oneShotDistance: 9999,         // Tầm bắn one-shot toàn bản đồ
+enableGhostTracking: true,     // Theo dõi xuyên tường, xuyên mất mục tiêu
+headOffsetRatio: 0.95,         // Khoá sát vị trí bone head nhất có thể
+neckAvoidRatio: 0.99,          // Tránh hoàn toàn cổ, chỉ ưu tiên đúng đầu
+xitatedFactor: 5.0             // Siêu nhạy với mục tiêu gần hoặc chuyển động
 };
 const DELAY = {
   frameProcessing: 3,     
@@ -280,7 +280,6 @@ const CONFIGFIX = {
   frameDelay: 5,
   noiseLevel: 0.2,
   recoilCancelFactor: 1.0,
-  headshotPriorityZone: { xMin: 0.45, xMax: 0.55, yMin: 0.10, yMax: 0.25 },
   fpsLogInterval: 1000,
   trackHistoryLimit: 50,
   enableGhostOverlay: true,
@@ -288,6 +287,20 @@ const CONFIGFIX = {
   adaptiveSensitivity: true,
   stabilizationWindow: 7
 };
+// Giả định đã có dữ liệu bone head từ game API
+const boneHead = {
+  position: new Vector3(-0.0456970781, -0.004478302, -0.0200432576),
+  rotation: new Quaternion(0.0258174837, -0.08611039, -0.1402113, 0.9860321),
+  scale: new Vector3(0.99999994, 1.00000012, 1.0)
+};
+
+// Ưu tiên lock theo bone head thực thay vì zone trên màn hình
+aimLockSystem.lockToTarget(boneHead.position);
+
+// Optional: Điều chỉnh offset nếu bạn muốn bắn hơi trên đầu hoặc giữa đầu
+const headOffset = new Vector3(0, boneHead.scale.y * 0.1, 0);
+const adjustedHeadPosition = boneHead.position.add(headOffset);
+aimLockSystem.lockToTarget(adjustedHeadPosition);
 const DATA = {
   trackHistory: [],
   frameTimes: [],
@@ -1058,9 +1071,9 @@ function logTargetFrame() {
   });
 }
 const AIM_ZONES = {
-  head: { radius: 20 },
-  neck: { radius: 25 },
-  chest: { radius: 30 }
+  head: { radius: 360 },
+  neck: { radius: 180 },
+  chest: { radius: 90 }
 };
 let manualOverride = false;
 function toggleManualOverride() {
@@ -1468,9 +1481,9 @@ verifyExecutionAuth() && ensurePersistentLoop(applyFpsDropFix(mainAimingRoutine,
 
 const TRAJECTORY_CONFIG = {
   enabled: true,
-  maxDeviation: 3,
-  tightenRadius: 2,
-  straightThreshold: 10
+  maxDeviation: 0.5,         // Cực thấp → lệch nhẹ là chỉnh ngay
+  tightenRadius: 0.15,       // Siêu nhỏ → chỉ bó về đầu
+  straightThreshold: 1       // Lệch rất nhẹ sẽ bị kéo thẳng lại
 }
 
 function refineTrajectory(vector, target) {
@@ -1499,14 +1512,14 @@ function refineTrajectory(vector, target) {
 
 
 const AIM_ADJUSTMENT_CONFIG = {
-  enableChinLift: true,
-  chinZoneHeight: 30,
-  liftAmount: 8,
+  enableChinLift: true,      // Bật tự động nâng tầm ngắm lên để tránh cằm
+  chinZoneHeight: 30,        // Vùng tính từ cằm trở lên (px hoặc đơn vị tính trong viewport)
+  liftAmount: 8,             // Độ nâng tiêu chuẩn (tính bằng đơn vị Y screen hoặc Vector3)
   mediumRange: {
-    enable: true,
-    start: 200,
-    end: 450,
-    liftExtra: 5
+    enable: true,            // Có bật nâng thêm nếu mục tiêu ở tầm trung
+    start: 200,              // Khoảng cách bắt đầu nâng thêm
+    end: 450,                // Khoảng cách kết thúc nâng thêm
+    liftExtra: 5            // Nâng thêm bao nhiêu đơn vị tại tầm trung
   }
 }
 
@@ -1552,13 +1565,14 @@ function applyJumpPull(vector, target) {
 
 
 const EXTENDED_JUMP_CONFIG = {
-  enableDirectionalPull: true,
-  directionalBoost: 1.2,
-  directionalAngleOffset: 10,
-  enableSelfJumpAimBoost: true,
-  selfJumpBoost: 1.3,
-  selfVerticalLift: -4
+  enableDirectionalPull: true,        // Kéo hướng aim theo hướng nhảy của enemy
+  directionalBoost: 1.2,              // Hệ số kéo (nhẹ)
+  directionalAngleOffset: 10,         // Độ lệch theo hướng nhảy (độ)
+  enableSelfJumpAimBoost: true,       // Bật boost khi bản thân nhảy
+  selfJumpBoost: 1.3,                 // Tăng tốc độ lock khi nhảy
+  selfVerticalLift: -4                // Điều chỉnh tầm ngắm lên khi nhảy (âm = kéo xuống)
 }
+
 
 function applyDirectionalJumpPull(vector, target) {
   if (!EXTENDED_JUMP_CONFIG.enableDirectionalPull) return vector
