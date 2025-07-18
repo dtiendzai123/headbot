@@ -844,7 +844,7 @@ function logTracking(target, vector) {
     target,
     aimed: vector
   };
-  fs.appendFileSync(logFile, JSON.stringify(entry) + "\n");
+  $persistentStore.write(JSON.stringify(data), "trackingData");
   console.clear();
   console.log("=== AIM DASHBOARD ===");
   console.log("Target X:", target.x, " Y:", target.y);
