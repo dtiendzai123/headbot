@@ -7,7 +7,8 @@ const CONFIG = {
   },
   FIRE_BUTTON: {
     x: 1000,
-    y: 1800
+    y: 1800,
+    SIZE: 500
   },
   AIM_ZONES: {
     head: { radius: 360 },
@@ -15,7 +16,7 @@ const CONFIG = {
     chest: { radius: 90 }
   },
   SENSITIVITY: {
-    dpi: 5000,
+    dpi: 10000,
     gameSensitivity: 400
   },
   FIRE: {
