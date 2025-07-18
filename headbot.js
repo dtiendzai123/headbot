@@ -8,7 +8,8 @@ const CONFIG = {
   FIRE_BUTTON: {
     x: 1000,
     y: 1800,
-    SIZE: 500
+    SIZE: 500,
+  DELAY: 0
   },
   AIM_ZONES: {
     head: { radius: 360 },
@@ -16,7 +17,7 @@ const CONFIG = {
     chest: { radius: 90 }
   },
   SENSITIVITY: {
-    dpi: 10000,
+    dpi: 4000,
     gameSensitivity: 400
   },
   FIRE: {
@@ -30,7 +31,7 @@ const CONFIG = {
     debugOverlay: true
   },
   THRESHOLDS: {
-    lockThreshold: 15,
+    lockThreshold: 0.001,
     retrainError: 30,
     retrainCount: 5
   },
