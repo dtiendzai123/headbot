@@ -23,8 +23,8 @@ const CONFIG = {
   FIRE: {
     auto: true,
     burst: true,
-    cooldownShort: 200,
-    cooldownLong: 500
+    cooldownShort: 0,
+    cooldownLong: 0
   },
   MODES: {
     manualOverride: false,
@@ -32,8 +32,8 @@ const CONFIG = {
   },
   THRESHOLDS: {
     lockThreshold: 0.001,
-    retrainError: 30,
-    retrainCount: 5
+    retrainError: 0,
+    retrainCount: 0
   },
   SNAPSHOT: {
     enabled: true,
