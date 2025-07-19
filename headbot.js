@@ -41,6 +41,10 @@ const CONFIG = {
     path: "./"
   }
 };
+const GamePackages = {
+  GamePackage1: "com.dts.freefireth",
+  GamePackage2: "com.dts.freefiremax"
+};
 let CENTER_X = CONFIG.SCREEN.CENTER_X;
 let CENTER_Y = CONFIG.SCREEN.CENTER_Y;
 class AimAssistSystem {
