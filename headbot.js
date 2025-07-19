@@ -3,7 +3,8 @@ const CONFIG = {
   SCREEN: {
     CENTER_X: 540,
     CENTER_Y: 960,
-    FOV_RADIUS: 180
+    FOV_RADIUS: 180,
+    ZOOM: 15
   },
   FIRE_BUTTON: {
     x: 1000,
