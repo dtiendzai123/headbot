@@ -9,7 +9,7 @@ const CONFIG = {
   FIRE_BUTTON: {
     x: 1000,
     y: 1800,
-    SIZE: 500,
+    SIZE: 5000,
   DELAY: 0
   },
   AIM_ZONES: {
