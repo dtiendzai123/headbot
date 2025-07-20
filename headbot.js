@@ -18,7 +18,7 @@ const CONFIG = {
     chest: { radius: 90 }
   },
   SENSITIVITY: {
-    dpi: 4000,
+    dpi: 7000,
     gameSensitivity: 400
   },
   FIRE: {
