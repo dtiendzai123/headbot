@@ -4,7 +4,8 @@ const CONFIG = {
     CENTER_X: 540,
     CENTER_Y: 960,
     FOV_RADIUS: 180,
-    ZOOM: 15
+    ZOOM: 15,
+   TOUCH_DELAY: 0.01
   },
   FIRE_BUTTON: {
     x: 1000,
@@ -19,7 +20,7 @@ const CONFIG = {
   },
   SENSITIVITY: {
     dpi: 7000,
-    gameSensitivity: 400
+    gameSensitivity: 1000
   },
   FIRE: {
     auto: true,
