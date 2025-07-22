@@ -5,7 +5,7 @@ const CONFIG = {
     CENTER_Y: 960,
     FOV_RADIUS: 180,
     ZOOM: 15,
-   TOUCH_DELAY: 0.01
+   TOUCH_DELAY: 0.0001
   },
   FIRE_BUTTON: {
     x: 1000,
@@ -19,7 +19,7 @@ const CONFIG = {
     chest: { radius: 90 }
   },
   SENSITIVITY: {
-    dpi: 12000,
+    dpi: 20000,
     gameSensitivity: 1000
   },
   FIRE: {
