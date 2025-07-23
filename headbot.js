@@ -11,7 +11,7 @@ const CONFIG = {
     x: 1000,
     y: 1800,
     SIZE: 5000,
-  DELAY: 0
+  TOUCH_DELAY: 0
   },
   AIM_ZONES: {
     head: { radius: 360 },
