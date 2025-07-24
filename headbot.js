@@ -8,8 +8,6 @@ const CONFIG = {
    TOUCH_DELAY: 0.0001
   },
   FIRE_BUTTON: {
-    x: 1000,
-    y: 1800,
     SIZE: 5000,
   TOUCH_DELAY: 0
   },
