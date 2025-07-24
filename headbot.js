@@ -55,7 +55,7 @@ class AimAssistSystem {
     this.targetHistory = [];
     this.lastFrameTime = Date.now();
     this.zoomActive = false;
-    this.weapon = 'RIFLE';
+    this.weapon = 'default';
   }
   smoothVector(inputVector) {
     this.vectorHistory.push(inputVector);
