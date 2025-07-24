@@ -172,7 +172,7 @@ this.AimAssistSystem = AimAssistSystem;
 const EXTRA_CONFIG = {
   smoothingFrames: 5,
   zoomLevelTrigger: 2,
-  sensitivityBase: 5.0,
+  sensitivityBase: 10.0,
   recoilCompensation: true,
   aimPrecision: 0.001,
   useHumanNoise: true,
@@ -531,7 +531,7 @@ function adbAimAt(target) {
   });
 }
 
-function startAndroidAimLoop() {
+function startiPhoneAimLoop() {
   function step() {
     // Không gọi captureAndroidScreen, trực tiếp giả lập hoặc lấy dữ liệu target khác
     detectHeadZone((target) => {
@@ -551,7 +551,7 @@ function detectHeadZone(callback) {
     height: 1.0,
     hasHelmet: false,
     behindWall: false,
-    distance: 10
+    distance: 9999
   };
   callback(dummyTarget);
 }
@@ -576,7 +576,7 @@ function advancedAimVector(current, target) {
   };
 }
 
-function smartAIAndroidAimLoop() {
+function smartAIiPhoneAimLoop() {
   function step() {
     // Giả lập lấy target trong Shadowrocket
     getHeadTarget((target) => {
@@ -621,7 +621,7 @@ function adbAimAt(vector) {
 let fallbackCount = 0;
 let lastKnownTarget = { x: CENTER_X, y: CENTER_Y };
 
-smartAIAndroidAimLoop();
+smartAIiPhoneAimLoop();
 
 function getFallbackTarget() {
   fallbackCount++;
@@ -643,7 +643,7 @@ function antiMissCompensation(current, target) {
 }
 
 // Giả lập hàm chụp màn hình (thay vì chụp thật)
-function captureAndroidScreen(callback) {
+function captureiPhoneScreen(callback) {
   // Trả dữ liệu dummy mô phỏng target detected
   setTimeout(() => {
     callback({
